@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz Espace — ENG Hub</title>
+<link rel="stylesheet" href="styles.css">
+<style>
+.level-badge{display:inline-block;background:#1e293b;border:1px solid #334155;border-radius:999px;padding:.3rem .9rem;font-size:.8rem;font-weight:700;color:#94a3b8;margin-bottom:1rem;}
+.prep-btns{display:flex;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap;}
+.prep-btn{flex:1;min-width:80px;padding:1rem;font-size:1.3rem;font-weight:900;border:none;border-radius:14px;cursor:pointer;transition:transform .1s,opacity .15s;}
+.prep-btn:active{transform:scale(.95);}
+.prep-btn.at{background:#10b981;color:#fff;}
+.prep-btn.on{background:#3b82f6;color:#fff;}
+.prep-btn.in{background:#8b5cf6;color:#fff;}
+.prep-btn:disabled{opacity:.5;cursor:default;}
+.hint-tag{display:inline-block;background:#1e293b;border:1px solid #334155;border-radius:8px;padding:.3rem .7rem;font-size:.8rem;color:#94a3b8;margin-top:.75rem;}
+.transition-screen{text-align:center;padding:3rem 1rem;display:none;}
+.transition-screen h2{font-size:1.5rem;font-weight:800;margin-bottom:.5rem;}
+.transition-screen p{color:#94a3b8;margin-bottom:1.5rem;}
+.mini-stats{display:flex;gap:1rem;justify-content:center;margin-bottom:2rem;flex-wrap:wrap;}
+.mini-stat{background:#1e293b;border-radius:12px;padding:.75rem 1.25rem;text-align:center;}
+.mini-stat .val{font-size:1.4rem;font-weight:800;color:#60a5fa;}
+.mini-stat .lbl{font-size:.75rem;color:#64748b;margin-top:.2rem;}
+.recall-btn{background:#1e293b;border:1px solid #334155;color:#94a3b8;border-radius:10px;padding:.5rem 1rem;font-size:.85rem;cursor:pointer;margin-bottom:1.5rem;}
+.recall-btn:hover{background:#293548;}
+.recall-modal{position:fixed;inset:0;background:rgba(0,0,0,.75);display:none;align-items:center;justify-content:center;z-index:100;padding:1rem;}
+.recall-box{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:1.5rem;max-width:360px;width:100%;}
+.recall-box h4{font-weight:800;margin-bottom:1rem;}
+.recall-rule{display:flex;align-items:center;gap:.75rem;margin-bottom:.6rem;font-size:.9rem;}
+.recall-rule .rp{font-size:1.1rem;font-weight:900;width:2rem;}
+.recall-rule .rp.at{color:#10b981;}
+.recall-rule .rp.on{color:#3b82f6;}
+.recall-rule .rp.in{color:#8b5cf6;}
+.recall-close{margin-top:1rem;width:100%;background:#334155;border:none;border-radius:10px;padding:.65rem;color:#f1f5f9;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="quiz-page">
+  <a href="theory-prepositions.html" class="back-btn">← Théorie</a>
+
+  <!-- LEVEL 1 -->
+  <div id="level1-screen">
+    <div class="quiz-header">
+      <div class="quiz-title">📍 L'Espace — Niveau 1</div>
+      <div class="quiz-controls">
+        <button class="icon-btn" id="sound-btn-l1" onclick="toggleSoundL1()" title="Son">🔊</button>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-bar-fill" id="pb1"></div></div>
+    <div class="score-bar">
+      <div class="score-display">Score : <span id="s1">0</span> / <span id="t1">0</span></div>
+      <div class="score-display">Question <span id="q1">1</span> / <span id="qt1">0</span></div>
+    </div>
+    <div class="question-card">
+      <div class="level-badge">Niveau 1 — QCM</div>
+      <div class="question-text" id="q1-text"></div>
+      <div id="hint-area"></div>
+      <div class="prep-btns">
+        <button class="prep-btn at" onclick="answerL1('AT')">AT</button>
+        <button class="prep-btn on" onclick="answerL1('ON')">ON</button>
+        <button class="prep-btn in" onclick="answerL1('IN')">IN</button>
+      </div>
+      <div class="feedback" id="fb1" style="display:none">
+        <div id="fb1-msg"></div>
+        <div class="feedback-correction" id="fb1-hint"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRANSITION -->
+  <div class="transition-screen" id="transition-screen">
+    <div style="font-size:3rem;margin-bottom:1rem;">🎯</div>
+    <h2>Niveau 1 terminé !</h2>
+    <p>Tu passes maintenant à l'écriture complète.</p>
+    <div class="mini-stats">
+      <div class="mini-stat"><div class="val" id="tr-score"></div><div class="lbl">Score</div></div>
+      <div class="mini-stat"><div class="val" id="tr-pct"></div><div class="lbl">Résultat</div></div>
+    </div>
+    <button class="cta-btn" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:none;border-radius:14px;padding:1rem 2.5rem;font-size:1.1rem;font-weight:800;cursor:pointer;" onclick="startLevel2()">Continuer vers le Niveau 2 →</button>
+  </div>
+
+  <!-- LEVEL 2 -->
+  <div id="level2-screen" style="display:none">
+    <div class="quiz-header">
+      <div class="quiz-title">✏️ L'Espace — Niveau 2</div>
+      <div class="quiz-controls">
+        <button class="icon-btn" id="sound-btn-l2" onclick="toggleSoundL2()" title="Son">🔊</button>
+        <button class="recall-btn" onclick="openRecall()">💡 Rappel</button>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-bar-fill" id="pb2"></div></div>
+    <div class="score-bar">
+      <div class="score-display">Score : <span id="s2">0</span> / <span id="t2">0</span></div>
+      <div class="score-display">Question <span id="q2">1</span> / <span id="qt2">0</span></div>
+      <span class="streak-badge" id="streak2" style="display:none"></span>
+    </div>
+    <div class="question-card">
+      <div class="level-badge">Niveau 2 — Écriture libre</div>
+      <div class="question-text" id="q2-text"></div>
+      <div class="answer-area">
+        <input type="text" id="ans2" class="answer-input" placeholder="Écris la traduction complète..." autocomplete="off" spellcheck="false">
+        <div class="live-feedback" id="lf2"></div>
+        <div class="action-row">
+          <button class="action-btn" id="sub2" onclick="checkL2()">Vérifier ✓</button>
+          <button class="skip-btn" id="skip2" onclick="skipL2()" style="display:inline-flex">⏭️ Passer</button>
+        </div>
+        <div class="feedback" id="fb2" style="display:none">
+          <div id="fb2-msg"></div>
+          <div class="feedback-correction" id="fb2-cor"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- END -->
+  <div class="end-screen" id="end-screen">
+    <div class="end-grade" id="end-grade"></div>
+    <div style="color:#94a3b8;margin-bottom:1.5rem;">Quiz des prépositions terminé !</div>
+    <div class="end-scores">
+      <div class="end-score-item"><div class="label">Niveau 1</div><div class="value" id="end-s1"></div></div>
+      <div class="end-score-item"><div class="label">Niveau 2</div><div class="value" id="end-s2"></div></div>
+      <div class="end-score-item"><div class="label">Total</div><div class="value" id="end-tot"></div></div>
+    </div>
+    <div style="margin-top:1.5rem">
+      <button class="restart-btn" onclick="location.reload()">🔄 Recommencer</button>
+      <button class="home-btn" onclick="location.href='index.html'">🏠 Accueil</button>
+    </div>
+  </div>
+</div>
+
+<!-- Recall modal -->
+<div class="recall-modal" id="recall-modal" onclick="closeRecall()">
+  <div class="recall-box" onclick="event.stopPropagation()">
+    <h4>💡 Rappel rapide</h4>
+    <div class="recall-rule"><span class="rp at">AT</span><span>Point précis, lieu fonctionnel<br><small style="color:#64748b">at school, at the bus stop</small></span></div>
+    <div class="recall-rule"><span class="rp on">ON</span><span>Sur une surface, axe<br><small style="color:#64748b">on the table, on the wall</small></span></div>
+    <div class="recall-rule"><span class="rp in">IN</span><span>À l'intérieur, ville/pays<br><small style="color:#64748b">in the box, in Paris</small></span></div>
+    <button class="recall-close" onclick="closeRecall()">Fermer</button>
+  </div>
+</div>
+
+<script src="lessons.js"></script>
+<script src="app.js"></script>
+<script src="prepositions-space.js"></script>
+<script>
+const SFX={ctx:null,_init(){if(!this.ctx)this.ctx=new(window.AudioContext||window.webkitAudioContext)();},
+play(type){try{this._init();const ctx=this.ctx;
+if(type==='correct'){const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.setValueAtTime(523.25,ctx.currentTime);o.frequency.setValueAtTime(783.99,ctx.currentTime+0.12);g.gain.setValueAtTime(0.25,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.45);o.start();o.stop(ctx.currentTime+0.45);}
+else if(type==='wrong'){const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.type='sawtooth';o.frequency.setValueAtTime(220,ctx.currentTime);g.gain.setValueAtTime(0.15,ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+0.3);o.start();o.stop(ctx.currentTime+0.3);}
+else if(type==='complete'){[523.25,659.25,783.99,1046.5].forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);o.frequency.value=f;const t=ctx.currentTime+i*0.13;g.gain.setValueAtTime(0.2,t);g.gain.exponentialRampToValueAtTime(0.001,t+0.4);o.start(t);o.stop(t+0.4);});}
+}catch(e){}}};
+
+const st={soundL1:true,soundL2:true,
+  l1:{qs:[],i:0,score:0},
+  l2:{qs:[],i:0,score:0,streak:0,maxStreak:0,skipped:0,state:"typing"}};
+
+function shuffle(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+function norm(t){return t.toLowerCase().replace(/[.,?!]/g,'').replace(/\s+/g,' ').trim();}
+function esc(c){return c==='<'?'&lt;':c==='>'?'&gt;':c==='&'?'&amp;':c;}
+function toggleSoundL1(){st.soundL1=!st.soundL1;document.getElementById('sound-btn-l1').textContent=st.soundL1?'🔊':'🔇';}
+function toggleSoundL2(){st.soundL2=!st.soundL2;document.getElementById('sound-btn-l2').textContent=st.soundL2?'🔊':'🔇';}
+function openRecall(){document.getElementById('recall-modal').style.display='flex';}
+function closeRecall(){document.getElementById('recall-modal').style.display='none';}
+
+// LEVEL 1
+function initL1(){
+  st.l1.qs=shuffle(SPACE_QUIZ.level1);st.l1.i=0;st.l1.score=0;
+  document.getElementById('t1').textContent=st.l1.qs.length;
+  document.getElementById('qt1').textContent=st.l1.qs.length;
+  loadL1();
+}
+function loadL1(){
+  const q=st.l1.qs[st.l1.i];
+  document.getElementById('q1').textContent=st.l1.i+1;
+  document.getElementById('pb1').style.width=(st.l1.i/st.l1.qs.length*100)+'%';
+  document.getElementById('q1-text').textContent=q.fr;
+  document.getElementById('hint-area').innerHTML='';
+  document.getElementById('fb1').style.display='none';
+  document.querySelectorAll('.prep-btn').forEach(b=>b.disabled=false);
+}
+function answerL1(prep){
+  const q=st.l1.qs[st.l1.i];
+  const ok=prep===q.prep;
+  document.querySelectorAll('.prep-btn').forEach(b=>b.disabled=true);
+  if(ok)st.l1.score++;
+  if(st.soundL1)SFX.play(ok?'correct':'wrong');
+  const fb=document.getElementById('fb1');
+  document.getElementById('fb1-msg').textContent=ok?'✅ Correct !':'❌ Pas tout à fait !';
+  document.getElementById('fb1-hint').textContent=ok?q.hint:'Réponse : '+q.prep+' — '+q.hint;
+  fb.className='feedback '+(ok?'correct':'incorrect');fb.style.display='block';
+  document.getElementById('hint-area').innerHTML='<span class="hint-tag">'+q.hint+'</span>';
+  document.getElementById('s1').textContent=st.l1.score;
+  setTimeout(()=>nextL1(),ok?1300:2200);
+}
+function nextL1(){
+  st.l1.i++;
+  if(st.l1.i<st.l1.qs.length)loadL1();
+  else showTransition();
+}
+function showTransition(){
+  document.getElementById('level1-screen').style.display='none';
+  document.getElementById('pb1').style.width='100%';
+  const pct=Math.round(st.l1.score/st.l1.qs.length*100);
+  document.getElementById('tr-score').textContent=st.l1.score+' / '+st.l1.qs.length;
+  document.getElementById('tr-pct').textContent=pct+'%';
+  document.getElementById('transition-screen').style.display='block';
+}
+
+// LEVEL 2
+function startLevel2(){
+  document.getElementById('transition-screen').style.display='none';
+  document.getElementById('level2-screen').style.display='block';
+  st.l2.qs=shuffle(SPACE_QUIZ.level2);st.l2.i=0;st.l2.score=0;st.l2.streak=0;st.l2.maxStreak=0;st.l2.skipped=0;st.l2.state="typing";
+  document.getElementById('t2').textContent=st.l2.qs.length;
+  document.getElementById('qt2').textContent=st.l2.qs.length;
+  loadL2();
+}
+function loadL2(){
+  st.l2.state="typing";const q=st.l2.qs[st.l2.i];
+  document.getElementById('q2').textContent=st.l2.i+1;
+  document.getElementById('pb2').style.width=(st.l2.i/st.l2.qs.length*100)+'%';
+  const qEl=document.getElementById('q2-text');
+  qEl.style.opacity='0';qEl.style.transform='translateY(10px)';
+  setTimeout(()=>{qEl.textContent=q.fr;qEl.style.transition='opacity .3s,transform .3s';qEl.style.opacity='1';qEl.style.transform='translateY(0)';},50);
+  const inp=document.getElementById('ans2');inp.value='';inp.disabled=false;inp.className='answer-input';
+  document.getElementById('lf2').style.display='none';document.getElementById('lf2').innerHTML='';
+  document.getElementById('sub2').textContent='Vérifier ✓';document.getElementById('sub2').className='action-btn';
+  document.getElementById('skip2').style.display='inline-flex';
+  document.getElementById('fb2').style.display='none';document.getElementById('fb2').className='feedback';
+  updateStreak2();setTimeout(()=>inp.focus(),80);
+}
+function checkL2(){
+  if(st.l2.state==="feedback"){nextL2();return;}
+  const inp=document.getElementById('ans2');const ua=inp.value.trim();if(!ua)return;
+  const q=st.l2.qs[st.l2.i];const ok=q.en.some(a=>norm(a)===norm(ua));
+  if(ok){
+    st.l2.score++;st.l2.streak++;if(st.l2.streak>st.l2.maxStreak)st.l2.maxStreak=st.l2.streak;
+    if(st.soundL2)SFX.play('correct');
+    st.l2.state="feedback";inp.disabled=true;document.getElementById('sub2').textContent='Continuer →';
+    document.getElementById('skip2').style.display='none';document.getElementById('lf2').style.display='none';
+    const fb=document.getElementById('fb2');fb.className='feedback correct';
+    document.getElementById('fb2-msg').textContent='✅ Parfait!'+(st.l2.streak>=3?' 🔥 Combo ×'+st.l2.streak+' !':'');
+    document.getElementById('fb2-cor').textContent='';fb.style.display='block';
+  }else{
+    st.l2.streak=0;if(st.soundL2)SFX.play('wrong');
+    inp.classList.add('shake');setTimeout(()=>inp.classList.remove('shake'),400);
+    const fb=document.getElementById('fb2');fb.className='feedback incorrect';
+    document.getElementById('fb2-msg').textContent='❌ Pas tout à fait, essaie encore !';
+    document.getElementById('fb2-cor').textContent='';fb.style.display='block';inp.focus();
+  }
+  document.getElementById('s2').textContent=st.l2.score;updateStreak2();
+}
+function skipL2(){
+  if(st.l2.state==="feedback")return;
+  const q=st.l2.qs[st.l2.i];const inp=document.getElementById('ans2');
+  st.l2.streak=0;st.l2.skipped++;st.l2.state="feedback";inp.value=q.en[0];inp.disabled=true;
+  document.getElementById('sub2').textContent='Continuer →';
+  document.getElementById('skip2').style.display='none';document.getElementById('lf2').style.display='none';
+  const fb=document.getElementById('fb2');fb.className='feedback incorrect';
+  document.getElementById('fb2-msg').textContent='⏭️ Question passée.';
+  document.getElementById('fb2-cor').textContent='Réponse : '+q.en[0];fb.style.display='block';
+  document.getElementById('s2').textContent=st.l2.score;updateStreak2();
+}
+function nextL2(){st.l2.i++;if(st.l2.i<st.l2.qs.length)loadL2();else showEnd();}
+function updateStreak2(){
+  const el=document.getElementById('streak2');if(!el)return;
+  if(st.l2.streak>=2){el.textContent='🔥 ×'+st.l2.streak;el.style.display='inline-block';el.className='streak-badge';void el.offsetWidth;el.className='streak-badge active';}else{el.style.display='none';}
+}
+function showEnd(){
+  if(st.soundL2)SFX.play('complete');
+  document.getElementById('level2-screen').style.display='none';
+  document.getElementById('end-screen').style.display='block';
+  const tot=st.l1.qs.length+st.l2.qs.length;
+  const total=st.l1.score+st.l2.score;
+  const pct=Math.round(total/tot*100);
+  const grade=pct===100?'🏆 PARFAIT !':pct>=90?'⭐⭐⭐ Excellent !':pct>=70?'⭐⭐ Bien joué !':pct>=50?'⭐ Continue !':'📚 Révise encore.';
+  document.getElementById('end-grade').textContent=grade;
+  document.getElementById('end-s1').textContent=st.l1.score+'/'+st.l1.qs.length;
+  document.getElementById('end-s2').textContent=st.l2.score+'/'+st.l2.qs.length;
+  document.getElementById('end-tot').textContent=pct+'%';
+  if(typeof updateLessonStat==='function')updateLessonStat('prepositions-1',total,tot);
+}
+
+// Live feedback L2
+(function(){
+  const inp=document.getElementById('ans2');if(!inp)return;
+  inp.addEventListener('input',function(){
+    if(st.l2.state!=="typing")return;const ut=this.value;const q=st.l2.qs[st.l2.i];const lb=document.getElementById('lf2');
+    if(!q||!ut){lb.style.display='none';lb.innerHTML='';return;}lb.style.display='block';
+    let best=q.en[0],max=-1;
+    for(const t of q.en){let m=0;for(let i=0;i<Math.min(ut.length,t.length);i++){if(ut[i].toLowerCase()===t[i].toLowerCase())m++;else break;}if(m>max){max=m;best=t;}}
+    let html='';for(let i=0;i<ut.length;i++){const ch=ut[i]===' '?'&nbsp;':esc(ut[i]);const ok=i<best.length&&ut[i].toLowerCase()===best[i].toLowerCase();html+=ok?'<span class="char-correct">'+ch+'</span>':'<span class="char-incorrect">'+ch+'</span>';}
+    lb.innerHTML=html;
+  });
+  inp.addEventListener('keypress',e=>{if(e.key==='Enter')checkL2();});
+})();
+
+initL1();
+</script>
+</body>
+</html>

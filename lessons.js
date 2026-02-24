@@ -1,0 +1,50 @@
+const LESSONS = {
+  "structures-1": {
+    id: "structures-1",
+    title: "Structures Clés",
+    subtitle: "Would, Could, Should",
+    icon: "🏗️",
+    color: "#3b82f6",
+    questionCount: 25,
+    theoryPage: null,
+    hasQuiz: true,
+    questions: [
+      {fr:"Je voudrais un café, s'il vous plaît.",en:["I would like a coffee, please."],structure:1},
+      {fr:"Est-ce que tu voudrais venir avec nous ?",en:["Would you like to come with us?"],structure:1},
+      {fr:"Il aimerait apprendre le piano.",en:["He would like to learn the piano.","He would love to learn the piano."],structure:1},
+      {fr:"Nous voudrions réserver une table pour ce soir.",en:["We would like to book a table for tonight.","We would like to reserve a table for tonight."],structure:1},
+      {fr:"Elle préférerait rester à la maison.",en:["She would prefer to stay at home.","She would rather stay at home."],structure:1},
+      {fr:"Je veux vraiment aller à Paris un jour.",en:["I would really like to go to Paris one day.","I really want to go to Paris one day."],structure:1},
+      {fr:"Ils voudraient un remboursement.",en:["They would like a refund."],structure:1},
+      {fr:"Est-ce que vous voudriez quelque chose à boire ?",en:["Would you like something to drink?"],structure:1},
+      {fr:"J'aimerais vraiment te voir bientôt.",en:["I would really like to see you soon.","I would love to see you soon."],structure:1},
+      {fr:"Pourriez-vous m'aider, s'il vous plaît ?",en:["Could you help me, please?"],structure:2},
+      {fr:"Est-ce que tu pourrais fermer la fenêtre ?",en:["Could you close the window?","Could you please close the window?"],structure:2},
+      {fr:"Serait-il possible de changer ma réservation ?",en:["Could I change my reservation?","Would it be possible to change my reservation?"],structure:2},
+      {fr:"Pourriez-vous parler plus lentement ?",en:["Could you speak more slowly?","Could you please speak more slowly?"],structure:2},
+      {fr:"Est-ce que je pourrais avoir l'addition ?",en:["Could I have the bill?","Could I get the check?"],structure:2},
+      {fr:"Ce serait bien si tu pouvais venir.",en:["It would be nice if you could come."],structure:2},
+      {fr:"Pourrait-il rappeler plus tard ?",en:["Could he call back later?"],structure:2},
+      {fr:"Est-ce que tu pourrais me prêter ton stylo ?",en:["Could you lend me your pen?","Could you borrow me your pen?"],structure:2},
+      {fr:"J'aurais dû étudier plus tôt.",en:["I should have studied earlier."],structure:3},
+      {fr:"Il aurait dû appeler avant de venir.",en:["He should have called before coming."],structure:3},
+      {fr:"Nous aurions dû prendre un parapluie.",en:["We should have taken an umbrella.","We should have brought an umbrella."],structure:3},
+      {fr:"Tu n'aurais pas dû dire ça.",en:["You should not have said that.","You shouldn't have said that."],structure:3},
+      {fr:"Elle aurait dû partir plus tôt.",en:["She should have left earlier."],structure:3},
+      {fr:"Ils auraient dû lire les instructions.",en:["They should have read the instructions."],structure:3},
+      {fr:"J'aurais dû me souvenir de son anniversaire.",en:["I should have remembered her birthday.","I should have remembered his birthday."],structure:3},
+      {fr:"On aurait dû réserver à l'avance.",en:["We should have booked in advance.","We should have reserved in advance."],structure:3}
+    ]
+  },
+  "prepositions-1": {
+    id: "prepositions-1",
+    title: "Prépositions de lieu",
+    subtitle: "AT / ON / IN — L'Espace",
+    icon: "📍",
+    color: "#10b981",
+    questionCount: 15,
+    theoryPage: "theory-prepositions.html",
+    hasQuiz: true,
+    questions: []
+  }
+};
